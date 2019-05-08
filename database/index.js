@@ -1,12 +1,18 @@
 const mongoose = require('mongoose');
 
 const options = {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    appname: 'spotifyShare',
-    reconnectTries: Number.MAX_VALUE,
-    validateOptions: true,
-    reconnectInterval: 1000,
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  appname: 'sessions-for-spotify',
+  reconnectTries: Number.MAX_VALUE,
+  validateOptions: true,
+  reconnectInterval: 1000,
 };
-let connectionString = "mongodb://localhost:27017/spotifyShare"
-mongoose.connect(connectionString(), options)
+const connectionString = 'mongodb://localhost:27017/sessions-for-spotify';
+
+function initialize() {
+  mongoose.connect(connectionString, options);
+}
+
+module.exports.initialize = initialize;
+module.exports.User = require('./models/User');
