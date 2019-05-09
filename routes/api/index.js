@@ -1,7 +1,7 @@
 const Router = require('koa-router');
 
 const uuidv4 = require('uuid/v4');
-const { User } = require('../database');
+const { User } = require('../../database');
 
 const router = new Router();
 
