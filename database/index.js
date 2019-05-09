@@ -16,3 +16,4 @@ function initialize() {
 
 module.exports.initialize = initialize;
 module.exports.User = require('./models/User');
+module.exports.Session = require('./models/Session');
