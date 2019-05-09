@@ -19,7 +19,11 @@ const Session = new Schema(
       required: true,
     },
     members: {
-      type: Array,
+      type: Object,
+    },
+    secret: {
+      type: String,
+      required: true,
     },
     created: Date,
   },
