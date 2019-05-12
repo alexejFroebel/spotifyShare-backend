@@ -11,6 +11,7 @@ const User = new Schema(
       },
       required: true,
     },
+    currentSession: String,
     created: Date,
   },
 );

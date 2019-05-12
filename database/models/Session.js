@@ -25,6 +25,10 @@ const Session = new Schema(
       type: String,
       required: true,
     },
+    token: {
+      type: String,
+      required: true,
+    },
     created: Date,
   },
 );

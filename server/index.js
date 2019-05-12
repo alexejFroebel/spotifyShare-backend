@@ -2,16 +2,16 @@ const { Session } = require('../database');
 
 const connections = {};
 
-function sendMessage(connection, eventType, value) {
+async function sendMessage(connection, eventType, value) {
   const json = {
     EventType: eventType,
     value,
   };
-  connection.send(JSON.stringify(json));
+  return connection.send(JSON.stringify(json));
 }
 function sendClientMessage(userId, eventType, value) {
   const connectionOfUser = connections[userId];
-  sendMessage(connectionOfUser, eventType, value);
+  return sendMessage(connectionOfUser, eventType, value);
 }
 async function sendMessageToSession(sessionId, eventType, value) {
   let listOfUserIds;
@@ -22,9 +22,9 @@ async function sendMessageToSession(sessionId, eventType, value) {
   } catch (err) {
     console.log(err);
   }
-  listOfUserIds.forEach((userId) => {
+  listOfUserIds.forEach(async (userId) => {
     const connectionOfUser = connections[userId];
-    sendMessage(connectionOfUser, eventType, value);
+    await sendMessage(connectionOfUser, eventType, value);
   });
 }
 function register(userid, connection) {
@@ -49,8 +49,16 @@ function hasWsConnection(userId) {
   }
   return false;
 }
+
+function closeConnection(userId) {
+  const connection = connections[userId];
+  if (connection) {
+    connection.close();
+  }
+}
 module.exports.register = register;
 module.exports.hasWsConnection = hasWsConnection;
 module.exports.sendMessage = sendMessage;
 module.exports.sendMessageToSession = sendMessageToSession;
 module.exports.sendClientMessage = sendClientMessage;
+module.exports.closeConnection = closeConnection;
