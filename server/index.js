@@ -38,6 +38,7 @@ function register(userid, connection) {
     console.log(`Connection closed${e}`);
     delete connections[userid];
   });
+  console.log('connected');
   connections[userid] = connection;
   sendMessage(connection, 'Connection', 'okay');
 }
