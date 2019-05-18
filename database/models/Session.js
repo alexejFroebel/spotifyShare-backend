@@ -25,8 +25,8 @@ const Session = new Schema(
       type: String,
       required: true,
     },
-    token: {
-      type: String,
+    tokenInfo: {
+      type: Object,
       required: true,
     },
     created: Date,
