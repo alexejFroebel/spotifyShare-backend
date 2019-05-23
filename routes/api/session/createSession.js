@@ -17,18 +17,19 @@ function createSession() {
     await assert.sessionIsUnique(ctx, sessionId);
     await sessionManager.checkAndUpdateUsersSession(ctx, userId, sessionId);
     const secret = uuidv4();
+    const created = new Date();
+    const members = {};
+    members[userId] = username;
+    const newSession = new Session({
+      ownerUserId: userId, pin, sessionId, created, members, secret, tokenInfo,
+    });
     try {
-      const created = new Date();
-      const members = {};
-      members[userId] = username;
-      const newSession = new Session({
-        ownerUserId: userId, pin, sessionId, created, members, secret, tokenInfo,
-      });
       await newSession.save();
     } catch (err) {
       console.log(err);
     }
     server.sendClientMessage(userId, 'SESSION_SECRET', secret);
+    server.sendMessageToSession(sessionId, 'NEW_MEMBERS', members);
     ctx.body = 'success';
   };
 }
