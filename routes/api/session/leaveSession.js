@@ -66,7 +66,7 @@ function leaveSession() {
       return console.log(err);
     }
     server.sendMessageToSession(sessionId, 'NEW_MEMBERS', sessionMembers);
-    ctx.body = 'success';
+    ctx.status = 200;
     removeUser(userId);
     return undefined;
   };

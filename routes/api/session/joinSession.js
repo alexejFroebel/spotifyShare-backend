@@ -37,9 +37,10 @@ function joinSession() {
       return console.log(err);
     }
     const sessionSecret = sessionToJoin.secret;
+    const owner = sessionToJoin.ownerUserId;
     server.sendMessageToSession(sessionId, 'NEW_MEMBERS', sessionMembers);
     server.sendClientMessage(userId, 'SESSION_SECRET', sessionSecret);
-    ctx.body = 'success';
+    ctx.body = { owner };
     return undefined;
   };
 }

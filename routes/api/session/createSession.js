@@ -30,7 +30,7 @@ function createSession() {
     }
     server.sendClientMessage(userId, 'SESSION_SECRET', secret);
     server.sendMessageToSession(sessionId, 'NEW_MEMBERS', members);
-    ctx.body = 'success';
+    ctx.status = 200;
   };
 }
 
