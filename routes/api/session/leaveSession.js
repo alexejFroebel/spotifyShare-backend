@@ -2,15 +2,6 @@ const { Session, User } = require('../../../database');
 const server = require('../../../server');
 const assert = require('../util/assert');
 
-async function removeUser(userId) {
-  try {
-    const user = await User.findOne({ userId });
-    server.closeConnection(userId);
-    user.remove();
-  } catch (err) {
-    console.log(err);
-  }
-}
 async function deleteSession(ctx, session, sessionId, token) {
   ctx.assert(token, 400, '9007');
   const sessionTokenInfo = session.tokenInfo;
@@ -22,7 +13,7 @@ async function deleteSession(ctx, session, sessionId, token) {
   const sessionMembersUserIds = Object.keys(sessionMembers);
   await server.sendMessageToSession(sessionId, 'REMOVED_FROM_SESSION', 'SESSION_DELETED');
   sessionMembersUserIds.forEach(((userId) => {
-    removeUser(userId);
+    server.closeConnection(userId);
   }));
   try {
     await session.remove();
@@ -38,6 +29,7 @@ function leaveSession() {
     } = ctx.request.body;
     ctx.assert(userId, 400, 'no user id');
     ctx.assert(sessionId, 400, 'no session id');
+    ctx.assert(secret, 400, '9009');
     assert.hasWsConnection(ctx, userId);
     await assert.validUser(ctx, userId);
     // FIXME user in session?
@@ -68,7 +60,7 @@ function leaveSession() {
     }
     server.sendMessageToSession(sessionId, 'NEW_MEMBERS', sessionMembers);
     ctx.status = 200;
-    removeUser(userId);
+    server.closeConnection(userId);
     return undefined;
   };
 }

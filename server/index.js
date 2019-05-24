@@ -1,7 +1,15 @@
-const { Session } = require('../database');
+const { Session, User } = require('../database');
 
 const connections = {};
 
+
+async function deleteUser(userId) {
+  const user = await User.findOne({ userId });
+  if (user) {
+    user.remove();
+  }
+  delete connections[userId];
+}
 async function sendMessage(connection, eventType, value) {
   const json = {
     EventType: eventType,
@@ -27,19 +35,19 @@ async function sendMessageToSession(sessionId, eventType, value) {
     await sendMessage(connectionOfUser, eventType, value);
   });
 }
-function register(userid, connection) {
+function register(userId, connection) {
   connection.on('message', (message) => {
-    console.log(`message from: ${userid}: ${message}`);
+    console.log(`message from: ${userId}: ${message}`);
   });
   connection.on('error', (error) => {
-    console.log(`Error: ${error} from ${userid}`);
+    console.log(`Error: ${error} from ${userId}`);
   });
   connection.on('close', (e) => {
     console.log(`Connection closed${e}`);
-    delete connections[userid];
+    deleteUser(userId);
   });
   console.log('connected');
-  connections[userid] = connection;
+  connections[userId] = connection;
   sendMessage(connection, 'Connection', 'okay');
 }
 

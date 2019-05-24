@@ -43,3 +43,4 @@ async function checkAndUpdateUsersSession(ctx, userId, sessionId) {
   }
 }
 module.exports.checkAndUpdateUsersSession = checkAndUpdateUsersSession;
+module.exports.checkIfUserIsInValidSession = checkIfUserIsInValidSession;
