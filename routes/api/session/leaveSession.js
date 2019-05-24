@@ -13,9 +13,8 @@ async function removeUser(userId) {
 }
 async function deleteSession(ctx, session, sessionId, token) {
   ctx.assert(token, 400, '9007');
-  const sessionToken = session.token;
-  console.log(token);
-  console.log(sessionToken);
+  const sessionTokenInfo = session.tokenInfo;
+  const sessionToken = sessionTokenInfo.token;
   if (token !== sessionToken) {
     ctx.throw(400, '9008');
   }
