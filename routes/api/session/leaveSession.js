@@ -29,7 +29,7 @@ async function deleteSession(ctx, session, sessionId, token) {
   } catch (err) {
     console.log(err);
   }
-  ctx.body = 'success';
+  ctx.status = 200;
 }
 function leaveSession() {
   return async (ctx) => {
