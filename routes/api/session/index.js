@@ -17,7 +17,7 @@ Errors:
 9004 session does not exist
 9005 invalid session pin
 9006 invalid session secret
-9007 no token provided by delete
+9007 no token provided for delete
 9008 wrong token for delete
 */
 module.exports = router;
